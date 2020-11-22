@@ -5,8 +5,10 @@ import { ApplicationState } from './applicationState.type';
 const initialState: ApplicationState = {
   isLoading: false,
   errorMessage: 'An Error Occured please try again.',
+  isError: false,
+  isSuccess: false,
+  successMessage: '',
 };
-
 
 const applicationStateSlice = createSlice({
   name: 'applicationState',
@@ -22,8 +24,6 @@ const applicationStateSlice = createSlice({
     },
     reset: () => initialState,
   },
-
-
 });
 
 export const applicationStateReducer = applicationStateSlice.reducer;

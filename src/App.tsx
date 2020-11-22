@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router';
 import { connect, ConnectedProps } from 'react-redux';
-import { Layout, Button, Row, ConfigProvider } from 'antd';
+import { Layout, Button, Row, ConfigProvider, Alert } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 import './App.css';
@@ -16,21 +16,22 @@ import { Loader } from '&styled/loader/loader.styled';
 type ReduxProps = ConnectedProps<typeof connector>;
 
 const App = (props: ReduxProps) => {
-  const { isAuthenticated, isLoading } = props;
+  const { isAuthenticated, isLoading, isError, isSuccess, errorMessage, successMessage } = props;
 
   const { i18n } = useTranslation();
+  const { t } = useTranslation('common');
 
   /** This useEffect rerenders dir */
   useEffect(() => {}, [i18n.language]);
 
-
-  const { Header, Footer,  Content } = Layout;
+  const { Header, Footer, Content } = Layout;
 
   return (
     /* This wrapper handles rtl and ltr directions for i18n */
     <ConfigProvider direction={i18n.dir()}>
-      {console.log('isAuthenticated ', isAuthenticated)}
       {isLoading ? <Loader /> : null}
+      {isError ? <Alert message={t('ERROR_TITLE')} description={errorMessage} type='error' closable className='modal-bg' /> : null}
+      {isSuccess ? <Alert message={t('SUCCESS_TITLE')} description={successMessage} type='success' closable className='modal-bg' /> : null}
       <Layout>
         <Header>
           {/* This block is for changing language */}
@@ -64,6 +65,10 @@ const mapStateToProps = (state: RootState) => ({
   // TODO change this to your real auth validator
   isAuthenticated: state.login.isAuthenticated,
   isLoading: state.applicationState.isLoading,
+  errorMessage: state.applicationState.errorMessage,
+  successMessage: state.applicationState.successMessage,
+  isError: state.applicationState.isError,
+  isSuccess: state.applicationState.isSuccess,
 });
 
 /**

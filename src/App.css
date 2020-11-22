@@ -89,6 +89,16 @@
   justify-content: left;
 }
 
+.modal-bg {
+  position: absolute !important;
+  width: 25% !important;
+  z-index: 9999 !important;
+  height: 100px !important;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
 @keyframes App-logo-float {
   0% {
     transform: translateY(0);
