@@ -29,6 +29,10 @@ let ar = {
     // ERRORS
     REQUIRED_ERROR_MESSAGE: 'الرجاء إدخال {{fieldName}}!',
     INVALID_ERROR_MESSAGE: 'الرجاء التحقق من صحة {{fieldName}}!',
+    ERROR_TITLE: '! خطأ',
+
+    // SUCCESS
+    SUCCESS_TITLE: '! نجاح',
   },
 };
 

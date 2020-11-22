@@ -36,6 +36,10 @@ let en = {
     // ERRORS
     REQUIRED_ERROR_MESSAGE: 'Please provide {{fieldName}}!',
     INVALID_ERROR_MESSAGE: 'Please make sure {{fieldName}} is valid!',
+    ERROR_TITLE: 'Error!',
+
+    // SUCCESS
+    SUCCESS_TITLE: 'Success!',
   },
 };
 

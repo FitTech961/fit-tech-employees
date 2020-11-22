@@ -13,7 +13,7 @@ import { applicationStateActions } from '&features/applicationState/applicationS
 type ReduxProps = ConnectedProps<typeof connector>;
 
 const LoginComponent = (props: ReduxProps) => {
-  const { loginAPI, setLoading, setErrorMessage } = props;
+  const { loginAPI, setLoading, setApplicationState } = props;
 
   const { t } = useTranslation(['login', 'common']);
 
@@ -27,9 +27,10 @@ const LoginComponent = (props: ReduxProps) => {
     setLoading(false);
 
     if (payload.status !== 201 && payload.status !== 200 && payload.status !== 204) {
-      setErrorMessage({ errorMessage: payload.message });
+      setApplicationState({ errorMessage: payload.message, isError: true, isSuccess: false });
     } else {
       history.push('/landing');
+      setApplicationState({ successMessage: 'Successfully logged in', isSuccess: true, isError: false });
     }
   };
 
@@ -126,7 +127,7 @@ const mapStateToProps = (state: RootState) => ({});
 const mapDispatchToProps = {
   loginAPI: loginActions.loginAPI,
   setLoading: applicationStateActions.setIsLoading,
-  setErrorMessage: applicationStateActions.setApplicationState,
+  setApplicationState: applicationStateActions.setApplicationState,
 };
 
 /**
