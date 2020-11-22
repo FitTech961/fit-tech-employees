@@ -12,6 +12,8 @@ export const landingNameSpace = {
     EDIT_HEADER: 'Edit',
     DELETE_HEADER: 'Delete',
     DOB: 'Birthdate',
+    SEARCH_PLACEHOLDER: 'Search by firstname, lastname, email, ...',
+    CLEAR_FILTERS: 'CLEAR FILTERS',
   },
   ar: {
     FIRSTNAME: 'الاسم الاول',
@@ -26,5 +28,7 @@ export const landingNameSpace = {
     EDIT_HEADER: 'تعديل',
     DELETE_HEADER: 'حذف',
     DOB: 'تاريخ الولادة',
+    SEARCH_PLACEHOLDER: 'البحث حسب الاسم الأول ، الاسم الأخير ، البريد الإلكتروني ، ...',
+    CLEAR_FILTERS: 'حذف عوامل التصفية',
   },
 };

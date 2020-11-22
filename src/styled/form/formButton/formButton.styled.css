@@ -24,3 +24,20 @@
   border: solid 1px #387de4 !important;
   background-color: #387de4 !important;
 }
+
+.borderless {
+  color: #387de4;
+  background: transparent !important;
+  font-weight: bold;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0.1px;
+}
+
+.borderless > span {
+  text-decoration: underline !important;
+}
+
+.borderless:hover {
+  opacity: 0.6;
+}
