@@ -8,4 +8,6 @@ const FormButton = (props: NativeButtonProps) => (
   <Button type='primary' shape='round' block={true} className='form-button primary-button' {...props} />
 );
 
-export { FormButton };
+const BorderlessButton = (props: NativeButtonProps) => <Button type='text' className='borderless' {...props} />;
+
+export { FormButton, BorderlessButton };

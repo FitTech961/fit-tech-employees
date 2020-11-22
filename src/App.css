@@ -130,6 +130,10 @@
   border: 0 !important;
 }
 
+.search-form-container {
+  margin-top: 30px;
+}
+
 @keyframes App-logo-float {
   0% {
     transform: translateY(0);
