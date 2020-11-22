@@ -99,22 +99,19 @@
   transform: translate(-50%, -50%);
 }
 
-.lang-container {
-  position: absolute;
-  top: 15px;
-  width: 100%;
-  padding-left: 20px;
-  padding-right: 20px;
-  z-index: 100;
-}
-
 .app-header {
   background-image: linear-gradient(#387de4, #4e6583) !important;
   justify-content: flex-end;
   align-items: center;
-  padding-right: 150px !important;
-  padding-left: 150px !important;
-  display: flex;
+  display: flex !important;
+}
+
+.app-header-lang {
+  justify-content: flex-end;
+  align-items: center;
+  display: flex !important;
+  background-color: transparent;
+  position: absolute;
 }
 
 .header-button {

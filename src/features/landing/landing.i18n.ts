@@ -1,12 +1,30 @@
-/**
- * i18n landing namespace
- * Consists of English and arabic translations
- */
 export const landingNameSpace = {
   en: {
-    // Write english key-mapping here
+    FIRSTNAME: 'First Name',
+    LASTNAME: 'Last Name',
+    EMAIL: 'Email',
+    MOBILE: 'Mobile Number',
+    DEPARTMENT: 'Department',
+    JOB_TITLE: 'Job Title',
+    ADDRESS: 'Address',
+    JOB_DESCRIPTION: 'Job Description',
+    ROLE: 'Role',
+    EDIT_HEADER: 'Edit',
+    DELETE_HEADER: 'Delete',
+    DOB: 'Birthdate',
   },
   ar: {
-    // Write Arabic key-mapping here
+    FIRSTNAME: 'الاسم الاول',
+    LASTNAME: 'الكنية',
+    EMAIL: 'البريد الإلكتروني',
+    MOBILE: 'رقم الهاتف',
+    DEPARTMENT: 'قسم',
+    JOB_TITLE: 'عنوان وظيفي',
+    ADDRESS: 'عنوان',
+    JOB_DESCRIPTION: 'المسمى الوظيفي',
+    ROLE: 'دور',
+    EDIT_HEADER: 'تعديل',
+    DELETE_HEADER: 'حذف',
+    DOB: 'تاريخ الولادة',
   },
 };

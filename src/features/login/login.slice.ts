@@ -26,7 +26,7 @@ const loginAPI = createAsyncThunk('loginSlice/login', async ({ username, passwor
       authorization: 'Bearer 123',
     };
 
-    const response = await axios.post(`${EMPLOYEE_MS_LOGIN_DEV}/login/signin`, body, { headers });
+    const response = await axios.post(`${EMPLOYEE_MS_LOGIN_DEV}/signin`, body, { headers });
 
     response.data.status = response.status;
 

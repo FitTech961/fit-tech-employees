@@ -3,6 +3,7 @@ import { combineReducers, Reducer } from 'redux';
 import { loginReducer } from '&features/login/login.slice';
 import { landingReducer } from '&features/landing/landing.slice';
 import { applicationStateReducer } from '&features/applicationState/applicationState.slice';
+import { employeesReducer } from '&features/landing/employees/employees.slice';
 
 /**
  * Combines reducers of all slices and router into one root reducer
@@ -15,6 +16,7 @@ const createRootReducer = (routerReducer: Reducer) =>
     login: loginReducer,
     landing: landingReducer,
     applicationState: applicationStateReducer,
+    employees: employeesReducer,
     // TODO add other reducers
     // The rest of your reducers go here in the following format:
     // ...
