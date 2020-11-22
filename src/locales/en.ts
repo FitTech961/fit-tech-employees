@@ -40,6 +40,9 @@ let en = {
 
     // SUCCESS
     SUCCESS_TITLE: 'Success!',
+
+    // Buttons:
+    LOGOUT: 'Logout',
   },
 };
 
