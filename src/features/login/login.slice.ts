@@ -1,84 +1,67 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-import { Login } from './login.type';
+import { Login, LoginBody } from './login.type';
+import { hashField } from '&auth/hashField';
+import { EMPLOYEE_MS_LOGIN_DEV } from '&config/url';
+import { applicationStateActions } from '&features/applicationState/applicationState.slice';
+import { landingActions } from '&features/landing/landing.slice';
 
-/**
- * Initial state object
- */
 const initialState: Login = {
   isAuthenticated: false,
+  username: '',
+  token: '',
+  fullName: '',
+  role: '',
 };
 
-/**
- * Thunks are used to dispatch actions that return functions rather than objects,
- * usually used for making api calls or dispatching async actions.
- * Thunks are dispatched in the same way regular actions are dispatched.
- * A slice can have multiple thunks
- */
-const makeLoginApiCall = createAsyncThunk(
-  // TODO change this method based on usecase
-  // You can add as many thunks as required
-  // Delete this method if not needed
-  'login/makeLoginApiCallStatus',
-  async (body: any) => {
-    // Make your API call here
-  },
-);
+const loginAPI = createAsyncThunk('loginSlice/login', async ({ username, password }: LoginBody, { rejectWithValue }) => {
+  try {
+    const body = {
+      email: username.trim().toLowerCase(),
+      password: hashField(password),
+    };
 
-/**
- * Feature slice Object
- * Automatically generates actions as per reducers
- */
+    const headers = {
+      authorization: 'Bearer 123',
+    };
+
+    const response = await axios.post(`${EMPLOYEE_MS_LOGIN_DEV}/login/signin`, body, { headers });
+
+    response.data.status = response.status;
+
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data);
+  }
+});
+
+const logoutAPI = createAsyncThunk('loginSlice/logout', async (arg: void, { dispatch }) => {
+  dispatch(loginActions.reset());
+  dispatch(applicationStateActions.reset());
+  dispatch(landingActions.reset());
+});
+
 const loginSlice = createSlice({
-  /**
-   * Unique feature name
-   */
   name: 'login',
-
-  /**
-   * Initial state object
-   */
   initialState: initialState,
 
-  /**
-   * Reducers are functions that determine changes to an application's state.
-   * They can have two forms:
-   *
-   * 1- Modify the state by providing key-value pairs, ex:
-   *
-   *    setCounter: (state, action) => {
-   *      return { ...state, ...action.payload };
-   *    }
-   *
-   * 2- Apply mutating logic to part of the state.
-   *    Note that this is possible using 'Immer', ex:
-   *
-   *    decrementCounter: (state) => {
-   *      state.value -= 1;
-   *    }
-   */
   reducers: {
     setLogin: (state, action) => {
       return { ...state, ...action.payload };
     },
     reset: () => initialState,
-    // Add here reducers
-    // ...
   },
-  /**
-   * Extra reducers are for handling action types.
-   * Here thunk actions are handled
-   */
+
   extraReducers: builder => {
-    // TODO remove extraReducers if there are no thunks
-    builder.addCase(makeLoginApiCall.pending, (state, action) => {
-      // Write pending logic here
-    });
-    builder.addCase(makeLoginApiCall.fulfilled, (state, action) => {
-      // Write success logic here
-    });
-    builder.addCase(makeLoginApiCall.rejected, (state, action) => {
-      // Write failure logic here
+    builder.addCase(loginAPI.fulfilled, (state: any, { payload, meta: { arg } }) => {
+      const { firstName, lastName, jwt } = payload;
+      const { username } = arg;
+
+      state.fullName = `${firstName} ${lastName}`;
+      state.token = jwt;
+      state.username = username;
+      state.isAuthenticated = true;
     });
   },
 });
@@ -93,4 +76,4 @@ export const loginReducer = loginSlice.reducer;
  * Actions can be dispached using 'useDispacth' hook,
  * or by 'mapDispatchToProps' in the redux 'connect' function
  */
-export const loginActions = { ...loginSlice.actions, makeLoginApiCall };
+export const loginActions = { ...loginSlice.actions, logoutAPI, loginAPI };
