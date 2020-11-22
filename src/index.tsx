@@ -20,7 +20,7 @@ ReactDOM.render(
       {/* Configures i18n */}
       <I18nextProvider i18n={i18n}>
         {/* App main entry, passes history for propper navigation */}
-        <App history={history} />
+        <App />
       </I18nextProvider>
     </PersistGate>
   </Provider>,
