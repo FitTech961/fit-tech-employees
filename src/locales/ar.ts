@@ -33,6 +33,9 @@ let ar = {
 
     // SUCCESS
     SUCCESS_TITLE: '! نجاح',
+
+    // Buttons:
+    LOGOUT: 'تسجيل خروج',
   },
 };
 

@@ -12,11 +12,12 @@ import { RootState, history } from '&store/store';
 import { LandingComponent } from '&features/landing/landing.component';
 import { LoginComponent } from '&features/login/login.component';
 import { Loader } from '&styled/loader/loader.styled';
+import { loginActions } from '&features/login/login.slice';
 
 type ReduxProps = ConnectedProps<typeof connector>;
 
 const App = (props: ReduxProps) => {
-  const { isAuthenticated, isLoading, isError, isSuccess, errorMessage, successMessage } = props;
+  const { isAuthenticated, isLoading, isError, isSuccess, errorMessage, successMessage, logoutAPI } = props;
 
   const { i18n } = useTranslation();
   const { t } = useTranslation('common');
@@ -33,13 +34,29 @@ const App = (props: ReduxProps) => {
       {isError ? <Alert message={t('ERROR_TITLE')} description={errorMessage} type='error' closable className='modal-bg' /> : null}
       {isSuccess ? <Alert message={t('SUCCESS_TITLE')} description={successMessage} type='success' closable className='modal-bg' /> : null}
       <Layout>
-        <Header>
+        <div className='lang-container'>
           {/* This block is for changing language */}
-          <Row justify={'center'}>
-            <Button onClick={() => i18n.changeLanguage('en')}>en </Button>
-            <Button onClick={() => i18n.changeLanguage('ar')}>ar</Button>
+          <Row justify={'end'}>
+            <Button className='lang-button' onClick={() => i18n.changeLanguage('en')}>
+              en{' '}
+            </Button>
+            <Button className='lang-button' onClick={() => i18n.changeLanguage('ar')}>
+              ar
+            </Button>
           </Row>
-        </Header>
+        </div>
+        {isAuthenticated ? (
+          <Header className='app-header'>
+            <Button
+              className='header-button'
+              onClick={() => {
+                logoutAPI();
+              }}
+            >
+              {t('LOGOUT')}
+            </Button>
+          </Header>
+        ) : null}
         <Content className='main-body'>
           <Router history={history}>
             <Switch>
@@ -74,7 +91,9 @@ const mapStateToProps = (state: RootState) => ({
 /**
  * Maps actions from slices to props
  */
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  logoutAPI: loginActions.logoutAPI,
+};
 
 /**
  * Connects component to redux store
