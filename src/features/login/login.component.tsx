@@ -29,8 +29,8 @@ const LoginComponent = (props: ReduxProps) => {
     if (payload.status !== 201 && payload.status !== 200 && payload.status !== 204) {
       setApplicationState({ errorMessage: payload.message, isError: true, isSuccess: false });
     } else {
-      history.push('/landing');
       setApplicationState({ successMessage: 'Successfully logged in', isSuccess: true, isError: false });
+      history.push('/landing');
     }
   };
 

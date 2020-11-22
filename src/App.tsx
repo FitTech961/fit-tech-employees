@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router';
 import { connect, ConnectedProps } from 'react-redux';
-import { Layout, Button, Row, ConfigProvider, Alert } from 'antd';
+import { Layout, Button, Row, ConfigProvider, Alert, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 import './App.css';
@@ -34,29 +34,30 @@ const App = (props: ReduxProps) => {
       {isError ? <Alert message={t('ERROR_TITLE')} description={errorMessage} type='error' closable className='modal-bg' /> : null}
       {isSuccess ? <Alert message={t('SUCCESS_TITLE')} description={successMessage} type='success' closable className='modal-bg' /> : null}
       <Layout>
-        <div className='lang-container'>
-          {/* This block is for changing language */}
-          <Row justify={'end'}>
+        <Row>
+          <Col span={22}>
+            {isAuthenticated ? (
+              <Header className='app-header'>
+                <Button
+                  className='header-button'
+                  onClick={() => {
+                    logoutAPI();
+                  }}
+                >
+                  {t('LOGOUT')}
+                </Button>
+              </Header>
+            ) : null}
+          </Col>
+          <Col span={2} className={isAuthenticated ? 'app-header' : 'app-header-lang'}>
             <Button className='lang-button' onClick={() => i18n.changeLanguage('en')}>
-              en{' '}
+              en
             </Button>
             <Button className='lang-button' onClick={() => i18n.changeLanguage('ar')}>
               ar
             </Button>
-          </Row>
-        </div>
-        {isAuthenticated ? (
-          <Header className='app-header'>
-            <Button
-              className='header-button'
-              onClick={() => {
-                logoutAPI();
-              }}
-            >
-              {t('LOGOUT')}
-            </Button>
-          </Header>
-        ) : null}
+          </Col>
+        </Row>
         <Content className='main-body'>
           <Router history={history}>
             <Switch>
