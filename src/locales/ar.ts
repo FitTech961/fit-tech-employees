@@ -16,6 +16,7 @@ let ar = {
     //Labels
     YOUR_EMAIL_LABEL: 'عنوان بريدك الإلكتروني',
     YOUR_PASSWORD_LABEL: 'كلمة المرور الخاصة بك',
+    ADD_EMPLOYEE: 'اضافة موظف',
 
     //Place Holders
     ADDRESS_PLACEHOLDER: 'بيروت، لبنان',

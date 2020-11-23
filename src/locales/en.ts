@@ -16,6 +16,7 @@ let en = {
     //Labels
     YOUR_EMAIL_LABEL: 'Email address ',
     YOUR_PASSWORD_LABEL: 'Password',
+    ADD_EMPLOYEE: 'Add Employee',
 
     //Place Holders
     NAME_PLACEHOLDER: 'Richard Nassar',
