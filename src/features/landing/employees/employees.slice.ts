@@ -25,11 +25,7 @@ const initialState: Employees = {
 
 const getAllEmployees = createAsyncThunk('employees/getAll', async (arg: void, { rejectWithValue }) => {
   try {
-    const headers = {
-      authorization: 'Bearer 123',
-    };
-
-    const response = await axios.get(`${EMPLOYEE_MS_DEV}/employee`, { headers });
+    const response = await axios.get(`${EMPLOYEE_MS_DEV}/employee`);
 
     return response.data;
   } catch (error) {
@@ -39,11 +35,7 @@ const getAllEmployees = createAsyncThunk('employees/getAll', async (arg: void, {
 
 const editEmployeeByEmail = createAsyncThunk('employees/editByEmail', async ({ body, email }: any, { rejectWithValue }) => {
   try {
-    const headers = {
-      authorization: 'Bearer 123',
-    };
-
-    const response = await axios.patch(`${EMPLOYEE_MS_DEV}/employee?email=${email}`, body, { headers });
+    const response = await axios.patch(`${EMPLOYEE_MS_DEV}/employee?email=${email}`, body);
 
     response.data.status = response.status;
 
@@ -55,11 +47,7 @@ const editEmployeeByEmail = createAsyncThunk('employees/editByEmail', async ({ b
 
 const deleteEmployeeById = createAsyncThunk('employees/deleteById', async (id: any, { rejectWithValue }) => {
   try {
-    const headers = {
-      authorization: 'Bearer 123',
-    };
-
-    const response = await axios.delete(`${EMPLOYEE_MS_DEV}/employee?id=${id}`, { headers });
+    const response = await axios.delete(`${EMPLOYEE_MS_DEV}/employee?id=${id}`);
     console.log('repsonserr ', response);
 
     let status: number = 0;
@@ -75,11 +63,7 @@ const deleteEmployeeById = createAsyncThunk('employees/deleteById', async (id: a
 
 const addEmployee = createAsyncThunk('employees/add', async (body: Employee, { rejectWithValue }) => {
   try {
-    const headers = {
-      authorization: 'Bearer 123',
-    };
-
-    const response = await axios.post(`${EMPLOYEE_MS_DEV}/employee`, body, { headers });
+    const response = await axios.post(`${EMPLOYEE_MS_DEV}/employee`, body);
     response.data.status = response.status;
 
     return response.data;
@@ -116,6 +100,7 @@ const employeesSlice = createSlice({
       state.employeesList = payload;
     });
     builder.addCase(getAllEmployees.rejected, (state, { payload, error }: any) => {
+      state.employeesList = [];
       message.error(payload?.message || error?.message);
     });
     builder.addCase(editEmployeeByEmail.fulfilled, (state, { payload }) => {});

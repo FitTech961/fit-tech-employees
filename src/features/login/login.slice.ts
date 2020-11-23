@@ -5,12 +5,12 @@ import { Login, LoginBody } from './login.type';
 import { hashField } from '&auth/hashField';
 import { EMPLOYEE_MS_LOGIN_DEV } from '&config/url';
 import { applicationStateActions } from '&features/applicationState/applicationState.slice';
-import { landingActions } from '&features/landing/landing.slice';
+import { employeesActions } from '&features/landing/employees/employees.slice';
 
 const initialState: Login = {
   isAuthenticated: false,
   username: '',
-  token: '',
+  token: '123',
   fullName: '',
   role: '',
 };
@@ -22,11 +22,7 @@ const loginAPI = createAsyncThunk('loginSlice/login', async ({ username, passwor
       password: hashField(password),
     };
 
-    const headers = {
-      authorization: 'Bearer 123',
-    };
-
-    const response = await axios.post(`${EMPLOYEE_MS_LOGIN_DEV}/signin`, body, { headers });
+    const response = await axios.post(`${EMPLOYEE_MS_LOGIN_DEV}/signin`, body);
 
     response.data.status = response.status;
 
@@ -39,7 +35,7 @@ const loginAPI = createAsyncThunk('loginSlice/login', async ({ username, passwor
 const logoutAPI = createAsyncThunk('loginSlice/logout', async (arg: void, { dispatch }) => {
   dispatch(loginActions.reset());
   dispatch(applicationStateActions.reset());
-  dispatch(landingActions.reset());
+  dispatch(employeesActions.reset());
 });
 
 const loginSlice = createSlice({

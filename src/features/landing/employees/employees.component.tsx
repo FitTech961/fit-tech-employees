@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Row, Col, Form, Select } from 'antd';
@@ -16,9 +16,9 @@ interface Props {
 
 // WIP
 const EmployeesComponent = (props: ReduxProps & Props) => {
-  const { currentEmployee, closeModal } = props;
+  const { closeModal } = props;
 
-  const { t } = useTranslation(['employees', 'common', 'landing']);
+  const { t } = useTranslation(['common', 'landing']);
 
   return (
     <>
@@ -221,9 +221,7 @@ const EmployeesComponent = (props: ReduxProps & Props) => {
  * Maps state variables from redux store to props of currect component
  * @param state
  */
-const mapStateToProps = (state: RootState) => ({
-  currentEmployee: state.employees.current,
-});
+const mapStateToProps = (state: RootState) => ({});
 
 /**
  * Maps actions from slices to props
