@@ -26,7 +26,7 @@ const LoginComponent = (props: ReduxProps) => {
     const { payload } = await loginAPI({ username, password });
     setLoading(false);
 
-    if (payload?.status ===201) {
+    if (payload?.status === 201) {
       setApplicationState({ successMessage: 'Successfully logged in', isSuccess: true, isError: false });
       history.push('/landing');
     } else {
