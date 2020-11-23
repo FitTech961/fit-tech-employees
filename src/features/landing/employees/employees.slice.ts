@@ -73,6 +73,21 @@ const deleteEmployeeById = createAsyncThunk('employees/deleteById', async (id: a
   }
 });
 
+const addEmployee = createAsyncThunk('employees/add', async (body: Employee, { rejectWithValue }) => {
+  try {
+    const headers = {
+      authorization: 'Bearer 123',
+    };
+
+    const response = await axios.post(`${EMPLOYEE_MS_DEV}/employee`, body, { headers });
+    response.data.status = response.status;
+
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data);
+  }
+});
+
 const employeesSlice = createSlice({
   name: 'employees',
   initialState: initialState,
@@ -85,7 +100,7 @@ const employeesSlice = createSlice({
       state.current = payload;
     },
     resetCurrentEmployee: state => {
-      return { ...state, ...emptyEmployee };
+      state.current = emptyEmployee;
     },
 
     reset: () => initialState,
@@ -114,6 +129,11 @@ const employeesSlice = createSlice({
     builder.addCase(deleteEmployeeById.rejected, (state, { payload, error }: any) => {
       message.error(payload?.message || error?.message);
     });
+
+    /** Add API rejected response */
+    builder.addCase(addEmployee.rejected, (state, { payload, error }: any) => {
+      message.error(payload?.message || error?.message);
+    });
   },
 });
 
@@ -122,4 +142,4 @@ const employeesSlice = createSlice({
  */
 export const employeesReducer = employeesSlice.reducer;
 
-export const employeesActions = { ...employeesSlice.actions, getAllEmployees, editEmployeeByEmail, deleteEmployeeById };
+export const employeesActions = { ...employeesSlice.actions, getAllEmployees, editEmployeeByEmail, deleteEmployeeById, addEmployee };

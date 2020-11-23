@@ -23,3 +23,7 @@
   height: 48px !important;
   border-radius: 16px !important;
 }
+
+.form-input.search {
+  margin: 0;
+}

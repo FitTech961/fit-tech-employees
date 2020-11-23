@@ -163,6 +163,15 @@
   color: #4b4b4b;
 }
 
+.row-add-search-container {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.row-add-search-container .add-emoployee {
+  margin-bottom: 24px;
+}
+
 @keyframes App-logo-float {
   0% {
     transform: translateY(0);

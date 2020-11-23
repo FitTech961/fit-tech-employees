@@ -208,7 +208,7 @@ const EmployeesComponent = (props: ReduxProps & Props) => {
         </Col>
         <Col span={6}>
           <Form.Item>
-            <FormButton htmlType='submit'>{t('landing:EDIT_HEADER')}</FormButton>
+            <FormButton htmlType='submit'>{t('landing:SAVE')}</FormButton>
           </Form.Item>
         </Col>
         <Col span={6}></Col>

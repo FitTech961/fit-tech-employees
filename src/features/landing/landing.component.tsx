@@ -11,7 +11,7 @@ import { employeesActions } from './employees/employees.slice';
 import { applicationStateActions } from '../applicationState/applicationState.slice';
 import { TableComponent } from '&styled/table/table.styled';
 import { FormInputSearch } from '&styled/form/formInput/formInput.styled';
-import { BorderlessButton } from '&styled/form/formButton/formButton.styled';
+import { BorderlessButton, FormButton } from '&styled/form/formButton/formButton.styled';
 import { Employee } from './employees/employees.type';
 import { EmployeeModal } from '&styled/modal/modal.styled';
 import { EmployeesComponent } from './employees/employees.component';
@@ -32,6 +32,7 @@ const LandingComponent = (props: ReduxProps) => {
     resetCurrentEmployee,
     editEmployeeByEmail,
     deleteEmployeeById,
+    addEmployee,
   } = props;
 
   const [employees, setEmployees] = useState(employeesList);
@@ -207,13 +208,15 @@ const LandingComponent = (props: ReduxProps) => {
     resetCurrentEmployee();
   };
 
-  const handleEditEmployee = async (values: Employee) => {
-    const { payload } = await editEmployeeByEmail({ body: values, email: currentEmail });
+  const handleSubmitForm = async (values: Employee) => {
+    const { payload } =
+      /** If current email is empty it means we are adding a new employee else editing an existing one */
+      currentEmployee.email !== '' ? await editEmployeeByEmail({ body: values, email: currentEmail }) : await addEmployee(values);
 
     if (payload?.status === 201) {
       getAllEmployees();
     }
-    setModalVisibility(false);
+    closeModal();
   };
 
   const handleDeleteEmployee = async (id: any) => {
@@ -228,9 +231,9 @@ const LandingComponent = (props: ReduxProps) => {
     <Content>
       {/* Modal when Edit or Add buttons are clicked  */}
       {isModalVisible ? (
-        <EmployeeModal visible={isModalVisible} borderlessHandler={closeModal} buttonHandler={handleEditEmployee}>
-          <p className='employee-modal-title'>{currentEmployee.email !== '' ? t('EDIT_FORM_TITLE') : t('EDIT_FORM_TITLE')}</p>
-          <Form ref={formEmpRef} name='Employee Form' layout='vertical' initialValues={currentEmployee} onFinish={handleEditEmployee}>
+        <EmployeeModal visible={isModalVisible} borderlessHandler={closeModal} buttonHandler={handleSubmitForm}>
+          <p className='employee-modal-title'>{currentEmployee.email !== '' ? t('EDIT_FORM_TITLE') : t('common:ADD_EMPLOYEE')}</p>
+          <Form ref={formEmpRef} name='Employee Form' layout='vertical' initialValues={currentEmployee} onFinish={handleSubmitForm}>
             <EmployeesComponent closeModal={closeModal}></EmployeesComponent>
           </Form>
         </EmployeeModal>
@@ -239,8 +242,8 @@ const LandingComponent = (props: ReduxProps) => {
         <Col span={2}></Col>
         <Col span={20} className='search-form-container'>
           <Form name='employeesList' ref={formRef}>
-            <Row justify='start' align='middle'>
-              <Col sm={24} md={18} lg={18} xl={20}>
+            <Row justify='start' align='middle' className='row-add-search-container'>
+              <Col sm={24} md={16} lg={16} xl={18}>
                 <Form.Item name='search'>
                   <FormInputSearch disabled={employees?.length <= 0} onChange={filterResults} placeholder={t('SEARCH_PLACEHOLDER')} />
                 </Form.Item>
@@ -256,6 +259,18 @@ const LandingComponent = (props: ReduxProps) => {
                     {t('CLEAR_FILTERS').toUpperCase()}
                   </BorderlessButton>
                 </Form.Item>
+              </Col>
+
+              <Col sm={24} md={4} lg={4} xl={3}>
+                <FormButton
+                  onClick={() => {
+                    resetCurrentEmployee();
+                    setModalVisibility(true);
+                  }}
+                  className='add-emoployee'
+                >
+                  {t('common:ADD_EMPLOYEE')}
+                </FormButton>
               </Col>
             </Row>
           </Form>
@@ -310,6 +325,7 @@ const mapDispatchToProps = {
   resetCurrentEmployee: employeesActions.resetCurrentEmployee,
   editEmployeeByEmail: employeesActions.editEmployeeByEmail,
   deleteEmployeeById: employeesActions.deleteEmployeeById,
+  addEmployee: employeesActions.addEmployee,
 };
 
 /**
