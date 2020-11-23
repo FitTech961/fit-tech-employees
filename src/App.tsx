@@ -18,7 +18,7 @@ import { loginActions } from '&features/login/login.slice';
 type ReduxProps = ConnectedProps<typeof connector>;
 
 const App = (props: ReduxProps) => {
-  const { isAuthenticated, isLoading, isError, isSuccess, errorMessage, successMessage, logoutAPI, token } = props;
+  const { isAuthenticated, isLoading, isError, errorMessage, logoutAPI, token } = props;
 
   const { i18n } = useTranslation();
   const { t } = useTranslation('common');
@@ -46,7 +46,6 @@ const App = (props: ReduxProps) => {
     <ConfigProvider direction={i18n.dir()}>
       {isLoading ? <Loader /> : null}
       {isError ? <Alert message={t('ERROR_TITLE')} description={errorMessage} type='error' closable className='modal-bg' /> : null}
-      {isSuccess ? <Alert message={t('SUCCESS_TITLE')} description={successMessage} type='success' closable className='modal-bg' /> : null}
       <Layout>
         <Row>
           <Col span={22}>
@@ -97,9 +96,7 @@ const mapStateToProps = (state: RootState) => ({
   isAuthenticated: state.login.isAuthenticated,
   isLoading: state.applicationState.isLoading,
   errorMessage: state.applicationState.errorMessage,
-  successMessage: state.applicationState.successMessage,
   isError: state.applicationState.isError,
-  isSuccess: state.applicationState.isSuccess,
   token: state.login.token,
 });
 

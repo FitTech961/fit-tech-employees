@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Row, Col, Form, Select } from 'antd';
 
 import { RootState } from '&store/store';
-import { FormInputText, FormInputSelect } from '&styled/form/formInput/formInput.styled';
+import { FormInputText, FormInputSelect, FormDatePicker } from '&styled/form/formInput/formInput.styled';
 import { BorderlessButton, FormButton } from '&styled/form/formButton/formButton.styled';
 
 type ReduxProps = ConnectedProps<typeof connector>;
@@ -12,11 +12,13 @@ type ReduxProps = ConnectedProps<typeof connector>;
 interface Props {
   /** Reset current selected employee and closes modal */
   closeModal: Function;
+
+  setdob: Function;
 }
 
 // WIP
 const EmployeesComponent = (props: ReduxProps & Props) => {
-  const { closeModal } = props;
+  const { closeModal, setdob } = props;
 
   const { t } = useTranslation(['common', 'landing']);
 
@@ -125,10 +127,8 @@ const EmployeesComponent = (props: ReduxProps & Props) => {
           <Form.Item
             label={t('landing:DOB')}
             name='dob'
-            extra='dd-mm-yyyy'
             rules={[
               {
-                pattern: /^(0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-](19|20)\d\d/,
                 required: true,
                 message: t('common:INVALID_ERROR_MESSAGE', {
                   fieldName: t('landing:DOB').toLowerCase(),
@@ -136,7 +136,7 @@ const EmployeesComponent = (props: ReduxProps & Props) => {
               },
             ]}
           >
-            <FormInputText placeholder={'dd-mm-yyyy'}></FormInputText>
+            <FormDatePicker setdob={setdob}></FormDatePicker>
           </Form.Item>
 
           <Form.Item

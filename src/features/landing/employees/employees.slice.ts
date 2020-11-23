@@ -8,7 +8,7 @@ import { EMPLOYEE_MS } from '&config/url';
 const emptyEmployee: Employee = {
   firstName: '',
   lastName: '',
-  dob: '',
+  dob: '01-01-2000',
   address: '',
   department: '',
   email: '',

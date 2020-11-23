@@ -6,8 +6,6 @@ const initialState: ApplicationState = {
   isLoading: false,
   errorMessage: 'An Error Occured please try again.',
   isError: false,
-  isSuccess: false,
-  successMessage: '',
 };
 
 const applicationStateSlice = createSlice({
