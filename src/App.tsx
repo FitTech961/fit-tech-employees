@@ -33,6 +33,7 @@ const App = (props: ReduxProps) => {
 
   axios.interceptors.request.use(async req => {
     req.headers.authorization = `Bearer ${token}`;
+    req.headers['Access-Control-Allow-Origin'] = '*';
 
     /** Important: request interceptors **must** return the request. */
     return req;

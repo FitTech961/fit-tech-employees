@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { Login, LoginBody } from './login.type';
 import { hashField } from '&auth/hashField';
-import { EMPLOYEE_MS_LOGIN_DEV } from '&config/url';
+import { EMPLOYEE_MS_LOGIN } from '&config/url';
 import { applicationStateActions } from '&features/applicationState/applicationState.slice';
 import { employeesActions } from '&features/landing/employees/employees.slice';
 
@@ -22,7 +22,7 @@ const loginAPI = createAsyncThunk('loginSlice/login', async ({ username, passwor
       password: hashField(password),
     };
 
-    const response = await axios.post(`${EMPLOYEE_MS_LOGIN_DEV}/signin`, body);
+    const response = await axios.post(`${EMPLOYEE_MS_LOGIN}/signin`, body);
 
     response.data.status = response.status;
 
