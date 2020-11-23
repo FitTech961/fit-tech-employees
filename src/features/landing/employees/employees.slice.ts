@@ -3,7 +3,7 @@ import axios from 'axios';
 import { message } from 'antd';
 
 import { Employees, Employee } from './employees.type';
-import { EMPLOYEE_MS_DEV } from '&config/url';
+import { EMPLOYEE_MS } from '&config/url';
 
 const emptyEmployee: Employee = {
   firstName: '',
@@ -25,7 +25,7 @@ const initialState: Employees = {
 
 const getAllEmployees = createAsyncThunk('employees/getAll', async (arg: void, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`${EMPLOYEE_MS_DEV}/employee`);
+    const response = await axios.get(`${EMPLOYEE_MS}/employee`);
 
     return response.data;
   } catch (error) {
@@ -35,7 +35,7 @@ const getAllEmployees = createAsyncThunk('employees/getAll', async (arg: void, {
 
 const editEmployeeByEmail = createAsyncThunk('employees/editByEmail', async ({ body, email }: any, { rejectWithValue }) => {
   try {
-    const response = await axios.patch(`${EMPLOYEE_MS_DEV}/employee?email=${email}`, body);
+    const response = await axios.patch(`${EMPLOYEE_MS}/employee?email=${email}`, body);
 
     response.data.status = response.status;
 
@@ -47,7 +47,7 @@ const editEmployeeByEmail = createAsyncThunk('employees/editByEmail', async ({ b
 
 const deleteEmployeeById = createAsyncThunk('employees/deleteById', async (id: any, { rejectWithValue }) => {
   try {
-    const response = await axios.delete(`${EMPLOYEE_MS_DEV}/employee?id=${id}`);
+    const response = await axios.delete(`${EMPLOYEE_MS}/employee?id=${id}`);
     console.log('repsonserr ', response);
 
     let status: number = 0;
@@ -63,7 +63,7 @@ const deleteEmployeeById = createAsyncThunk('employees/deleteById', async (id: a
 
 const addEmployee = createAsyncThunk('employees/add', async (body: Employee, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${EMPLOYEE_MS_DEV}/employee`, body);
+    const response = await axios.post(`${EMPLOYEE_MS}/employee`, body);
     response.data.status = response.status;
 
     return response.data;
