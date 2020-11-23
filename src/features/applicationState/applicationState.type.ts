@@ -7,10 +7,4 @@ export interface ApplicationState {
 
   /** Set true to display error modal */
   isError: boolean;
-
-  /** Set true to display success modal */
-  isSuccess: boolean;
-
-  /** Success message to be displayed for the user */
-  successMessage: string;
 }

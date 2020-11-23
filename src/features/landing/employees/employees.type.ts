@@ -7,7 +7,7 @@ export interface Employee {
   lastName: string;
 
   /** Date of birth dd-mm-yyyy */
-  dob: string;
+  dob: any;
 
   phoneNumber?: string;
 

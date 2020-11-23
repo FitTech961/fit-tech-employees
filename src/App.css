@@ -163,6 +163,11 @@
   margin-bottom: 24px;
 }
 
+.row-add-search-container .add-emoployee > span {
+  font-weight: bold;
+  letter-spacing: 0.7px;
+}
+
 @keyframes App-logo-float {
   0% {
     transform: translateY(0);

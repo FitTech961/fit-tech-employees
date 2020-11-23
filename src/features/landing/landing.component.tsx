@@ -10,7 +10,7 @@ import { employeesActions } from './employees/employees.slice';
 import { applicationStateActions } from '../applicationState/applicationState.slice';
 import { TableComponent } from '&styled/table/table.styled';
 import { FormInputSearch } from '&styled/form/formInput/formInput.styled';
-import { BorderlessButton, FormButton } from '&styled/form/formButton/formButton.styled';
+import { FormButton } from '&styled/form/formButton/formButton.styled';
 import { Employee } from './employees/employees.type';
 import { EmployeeModal } from '&styled/modal/modal.styled';
 import { EmployeesComponent } from './employees/employees.component';
@@ -24,7 +24,6 @@ const LandingComponent = (props: ReduxProps) => {
   const {
     getAllEmployees,
     setLoading,
-    setApplicationState,
     employeesList,
     setCurrentEmployee,
     currentEmployee,
@@ -37,6 +36,7 @@ const LandingComponent = (props: ReduxProps) => {
   const [employees, setEmployees] = useState(employeesList);
   const [isModalVisible, setModalVisibility] = useState(false);
   const [currentEmail, setCurrentEmail] = useState<string>('');
+  const [currentdob, setdob] = useState<string>('01-01-2000');
 
   const { t } = useTranslation(['landing', 'common']);
 
@@ -45,7 +45,7 @@ const LandingComponent = (props: ReduxProps) => {
     const { payload } = await getAllEmployees();
 
     /** IF API failed set employees to empty array */
-    const allEmployees = payload.length !== undefined ? payload : [];
+    const allEmployees = payload?.length !== undefined ? payload : [];
 
     setEmployees(allEmployees);
     setLoading(false);
@@ -176,6 +176,7 @@ const LandingComponent = (props: ReduxProps) => {
             /** Find employee by id */
             const { key: _id } = row;
             const employee = employeesList.find((employee: Employee) => employee._id === _id);
+
             setCurrentEmployee(employee);
             setCurrentEmail(employee?.email ?? '');
             setModalVisibility(true);
@@ -212,8 +213,11 @@ const LandingComponent = (props: ReduxProps) => {
   };
 
   const handleSubmitForm = async (values: Employee) => {
+    /** If current email is empty it means we are adding a new employee else editing an existing one */
+
+    delete values.dob;
+    values.dob = currentdob;
     const { payload } =
-      /** If current email is empty it means we are adding a new employee else editing an existing one */
       currentEmployee.email !== '' ? await editEmployeeByEmail({ body: values, email: currentEmail }) : await addEmployee(values);
 
     if (payload?.status === 201) {
@@ -237,7 +241,7 @@ const LandingComponent = (props: ReduxProps) => {
         <EmployeeModal visible={isModalVisible} borderlessHandler={closeModal} buttonHandler={handleSubmitForm}>
           <p className='employee-modal-title'>{currentEmployee.email !== '' ? t('EDIT_FORM_TITLE') : t('common:ADD_EMPLOYEE')}</p>
           <Form ref={formEmpRef} name='Employee Form' layout='vertical' initialValues={currentEmployee} onFinish={handleSubmitForm}>
-            <EmployeesComponent closeModal={closeModal}></EmployeesComponent>
+            <EmployeesComponent closeModal={closeModal} setdob={setdob}></EmployeesComponent>
           </Form>
         </EmployeeModal>
       ) : null}
@@ -248,21 +252,11 @@ const LandingComponent = (props: ReduxProps) => {
             <Row justify='start' align='middle' className='row-add-search-container'>
               <Col sm={24} md={16} lg={16} xl={18}>
                 <Form.Item name='search'>
-                  <FormInputSearch disabled={employees?.length <= 0} onChange={filterResults} placeholder={t('SEARCH_PLACEHOLDER')} />
+                  <FormInputSearch onChange={filterResults} placeholder={t('SEARCH_PLACEHOLDER')} />
                 </Form.Item>
               </Col>
-              <Col sm={24} md={4} lg={4} xl={3}>
-                <Form.Item>
-                  <BorderlessButton
-                    onClick={() => {
-                      formRef?.current?.resetFields();
-                      setEmployees(employeesList);
-                    }}
-                  >
-                    {t('CLEAR_FILTERS').toUpperCase()}
-                  </BorderlessButton>
-                </Form.Item>
-              </Col>
+
+              <Col sm={24} md={2} lg={2} xl={3}></Col>
 
               <Col sm={24} md={4} lg={4} xl={3}>
                 <FormButton
@@ -278,28 +272,32 @@ const LandingComponent = (props: ReduxProps) => {
             </Row>
           </Form>
         </Col>
-        <Col span={2}></Col>
+        <Col span={3}></Col>
       </Row>
 
       <Row>
         <Col span={24}>
-          <TableComponent
-            columns={columns}
-            dataSource={employees?.map(
-              ({ _id: key, firstName, lastName, dob, phoneNumber, email, department, jobTitle, jobDescription, address }) => ({
-                key,
-                firstName,
-                lastName,
-                dob,
-                phoneNumber,
-                email,
-                department,
-                jobTitle,
-                jobDescription,
-                address,
-              }),
-            )}
-          />
+          {employees.length > 0 ? (
+            <TableComponent
+              columns={columns}
+              dataSource={employees?.map(
+                ({ _id: key, firstName, lastName, dob, phoneNumber, email, department, jobTitle, jobDescription, address }) => ({
+                  key,
+                  firstName,
+                  lastName,
+                  dob,
+                  phoneNumber,
+                  email,
+                  department,
+                  jobTitle,
+                  jobDescription,
+                  address,
+                }),
+              )}
+            />
+          ) : (
+            <TableComponent columns={columns} />
+          )}
         </Col>
       </Row>
     </Content>
@@ -323,7 +321,6 @@ const mapDispatchToProps = {
   // increment : counterActions.increment
   getAllEmployees: employeesActions.getAllEmployees,
   setLoading: applicationStateActions.setIsLoading,
-  setApplicationState: applicationStateActions.setApplicationState,
   setCurrentEmployee: employeesActions.setCurrentEmployee,
   resetCurrentEmployee: employeesActions.resetCurrentEmployee,
   editEmployeeByEmail: employeesActions.editEmployeeByEmail,

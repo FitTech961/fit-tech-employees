@@ -6,7 +6,7 @@ const TableComponent = (props: TableProps<any>) => (
   <Table<any>
     pagination={{
       defaultCurrent: 1,
-      defaultPageSize: 5,
+      defaultPageSize: 10,
       pageSizeOptions: ['5', '10', '20', '30', '40'],
       showSizeChanger: true,
       position: ['bottomCenter'],
