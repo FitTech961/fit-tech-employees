@@ -25,6 +25,11 @@ const App = (props: ReduxProps) => {
   /** This useEffect rerenders dir */
   useEffect(() => {}, [i18n.language]);
 
+  useEffect(() => {
+    /** If the user is already logged in take him to landing screen */
+    if (isAuthenticated) history.push('/landing');
+  }, []);
+
   const { Header, Footer, Content } = Layout;
 
   return (

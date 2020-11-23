@@ -14,6 +14,7 @@ export const landingNameSpace = {
     DOB: 'Birthdate',
     SEARCH_PLACEHOLDER: 'Search by firstname, lastname, email, ...',
     CLEAR_FILTERS: 'CLEAR FILTERS',
+    EDIT_FORM_TITLE: 'Edit Employee',
   },
   ar: {
     FIRSTNAME: 'الاسم الاول',
@@ -30,5 +31,6 @@ export const landingNameSpace = {
     DOB: 'تاريخ الولادة',
     SEARCH_PLACEHOLDER: 'البحث حسب الاسم الأول ، الاسم الأخير ، البريد الإلكتروني ، ...',
     CLEAR_FILTERS: 'حذف عوامل التصفية',
+    EDIT_FORM_TITLE: 'تعديل الموظف',
   },
 };

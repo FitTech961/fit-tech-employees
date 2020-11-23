@@ -1,6 +1,6 @@
 export interface Employee {
   /** Identifier */
-  _id: string;
+  _id?: string;
 
   firstName: string;
 
@@ -9,9 +9,9 @@ export interface Employee {
   /** Date of birth dd-mm-yyyy */
   dob: string;
 
-  phoneNumber: string;
+  phoneNumber?: string;
 
-  email: string;
+  email?: string;
 
   department: string;
 
@@ -28,4 +28,7 @@ export interface Employee {
 export interface Employees {
   /** Array of employees */
   employeesList: Employee[];
+
+  /** Holds data of currently selected employee (for add or update) */
+  current: Employee;
 }

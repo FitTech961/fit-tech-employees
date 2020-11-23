@@ -33,7 +33,7 @@ const persistConfig = {
   storage,
 
   /** Reducers that to be persisted in storage */
-  whitelist: ['login'],
+  whitelist: ['login', 'employees'],
 
   /** Reducers that should not be persisted */
   blacklist: ['router'],
