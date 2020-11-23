@@ -40,8 +40,6 @@
   width: 100%;
 }
 
-/** --------------------------- Login Screen Start --------------------------------------- */
-
 .login {
 }
 
@@ -132,6 +130,37 @@
 
 .search-form-container {
   margin-top: 30px;
+}
+
+.edit-icon,
+.delete-icon {
+  height: 18px !important;
+}
+
+.edit-icon:hover,
+.delete-icon:hover {
+  cursor: pointer;
+}
+
+.edit-icon:hover path,
+.delete-icon:hover path {
+  fill: #387de4;
+}
+
+.edit-icon:hover g,
+.delete-icon:hover g {
+  opacity: 1;
+}
+
+.employee-modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.11px;
+  text-align: center;
+  color: #4b4b4b;
 }
 
 @keyframes App-logo-float {

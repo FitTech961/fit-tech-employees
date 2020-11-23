@@ -13,3 +13,13 @@
   color: #4b4b4b;
   padding: 10px 16px;
 }
+
+.input-select > .ant-select-selector > span {
+  align-self: center;
+  text-align: center;
+}
+
+.input-select > .ant-select-selector {
+  height: 48px !important;
+  border-radius: 16px !important;
+}

@@ -13,6 +13,8 @@ import { TableComponent } from '&styled/table/table.styled';
 import { FormInputSearch } from '&styled/form/formInput/formInput.styled';
 import { BorderlessButton } from '&styled/form/formButton/formButton.styled';
 import { Employee } from './employees/employees.type';
+import { EmployeeModal } from '&styled/modal/modal.styled';
+import { EmployeesComponent } from './employees/employees.component';
 
 import { ReactComponent as EditIcon } from '&assets/images/edit-icon.svg';
 import { ReactComponent as DeleteIcon } from '&assets/images/trash-black-icon.svg';
@@ -20,11 +22,22 @@ import { ReactComponent as DeleteIcon } from '&assets/images/trash-black-icon.sv
 type ReduxProps = ConnectedProps<typeof connector>;
 
 const LandingComponent = (props: ReduxProps) => {
-  const { getAllEmployees, setLoading, setApplicationState, employeesList } = props;
+  const {
+    getAllEmployees,
+    setLoading,
+    setApplicationState,
+    employeesList,
+    setCurrentEmployee,
+    currentEmployee,
+    resetCurrentEmployee,
+    editEmployeeByEmail,
+  } = props;
 
   const [employees, setEmployees] = useState(employeesList);
+  const [isModalVisible, setModalVisibility] = useState(false);
+  const [currentEmail, setCurrentEmail] = useState<string>('');
 
-  const { t } = useTranslation(['landing']);
+  const { t } = useTranslation(['landing', 'common']);
 
   const handleGetEmployees = async () => {
     setLoading(true);
@@ -32,6 +45,10 @@ const LandingComponent = (props: ReduxProps) => {
     setLoading(false);
     setEmployees(payload);
   };
+
+  useEffect(() => {
+    setEmployees(employeesList);
+  }, [employeesList]);
 
   useEffect(() => {
     handleGetEmployees();
@@ -106,6 +123,15 @@ const LandingComponent = (props: ReduxProps) => {
       sorter: (a: any, b: any) => a.email.localeCompare(b.email),
     },
     {
+      title: t('ADDRESS'),
+      dataIndex: 'address',
+      key: 'address',
+      align: 'center',
+      width: 200,
+      ellipsis: true,
+      sorter: (a: any, b: any) => a.address.localeCompare(b.address),
+    },
+    {
       title: t('DEPARTMENT'),
       dataIndex: 'department',
       key: 'department',
@@ -142,7 +168,12 @@ const LandingComponent = (props: ReduxProps) => {
         <EditIcon
           className='edit-icon'
           onClick={() => {
-            console.log('Edit icon clicked');
+            /** Find employee by id */
+            const { key: _id } = row;
+            const employee = employeesList.find((employee: Employee) => employee._id === _id);
+            setCurrentEmployee(employee);
+            setCurrentEmail(employee?.email ?? '');
+            setModalVisibility(true);
           }}
         />
       ),
@@ -155,9 +186,11 @@ const LandingComponent = (props: ReduxProps) => {
       width: 60,
       render: (value, row) => (
         <DeleteIcon
-          className='trash-icon'
+          className='delete-icon'
           onClick={() => {
-            console.log('Delete icon clicked');
+            /** Find employee by id */
+            const { key: _id } = row;
+            const employee = employeesList.find((employee: Employee) => employee._id === _id);
           }}
         />
       ),
@@ -165,9 +198,33 @@ const LandingComponent = (props: ReduxProps) => {
   ];
 
   const formRef = useRef<FormInstance>(null);
+  const formEmpRef = useRef<FormInstance>(null);
+
+  const closeModal = () => {
+    setModalVisibility(false);
+    resetCurrentEmployee();
+  };
+
+  const handleEditEmployee = async (values: Employee) => {
+    const { payload } = await editEmployeeByEmail({ body: values, email: currentEmail });
+
+    if (payload?.status === 201) {
+      getAllEmployees();
+    }
+    setModalVisibility(false);
+  };
 
   return (
     <Content>
+      {/* Modal when Edit or Add buttons are clicked  */}
+      {isModalVisible ? (
+        <EmployeeModal visible={isModalVisible} borderlessHandler={closeModal} buttonHandler={handleEditEmployee}>
+          <p className='employee-modal-title'>{currentEmployee.email !== '' ? t('EDIT_FORM_TITLE') : t('EDIT_FORM_TITLE')}</p>
+          <Form ref={formEmpRef} name='Employee Form' layout='vertical' initialValues={currentEmployee} onFinish={handleEditEmployee}>
+            <EmployeesComponent closeModal={closeModal}></EmployeesComponent>
+          </Form>
+        </EmployeeModal>
+      ) : null}
       <Row>
         <Col span={2}></Col>
         <Col span={20} className='search-form-container'>
@@ -175,7 +232,7 @@ const LandingComponent = (props: ReduxProps) => {
             <Row justify='start' align='middle'>
               <Col sm={24} md={18} lg={18} xl={20}>
                 <Form.Item name='search'>
-                  <FormInputSearch disabled={employees.length <= 0} onChange={filterResults} placeholder={t('SEARCH_PLACEHOLDER')} />
+                  <FormInputSearch disabled={employees?.length <= 0} onChange={filterResults} placeholder={t('SEARCH_PLACEHOLDER')} />
                 </Form.Item>
               </Col>
               <Col sm={24} md={4} lg={4} xl={3}>
@@ -200,8 +257,8 @@ const LandingComponent = (props: ReduxProps) => {
         <Col span={24}>
           <TableComponent
             columns={columns}
-            dataSource={employees.map(
-              ({ _id: key, firstName, lastName, dob, phoneNumber, email, department, jobTitle, jobDescription }) => ({
+            dataSource={employees?.map(
+              ({ _id: key, firstName, lastName, dob, phoneNumber, email, department, jobTitle, jobDescription, address }) => ({
                 key,
                 firstName,
                 lastName,
@@ -211,6 +268,7 @@ const LandingComponent = (props: ReduxProps) => {
                 department,
                 jobTitle,
                 jobDescription,
+                address,
               }),
             )}
           />
@@ -226,6 +284,7 @@ const LandingComponent = (props: ReduxProps) => {
  */
 const mapStateToProps = (state: RootState) => ({
   employeesList: state.employees.employeesList,
+  currentEmployee: state.employees.current,
 });
 
 /**
@@ -237,6 +296,9 @@ const mapDispatchToProps = {
   getAllEmployees: employeesActions.getAllEmployees,
   setLoading: applicationStateActions.setIsLoading,
   setApplicationState: applicationStateActions.setApplicationState,
+  setCurrentEmployee: employeesActions.setCurrentEmployee,
+  resetCurrentEmployee: employeesActions.resetCurrentEmployee,
+  editEmployeeByEmail: employeesActions.editEmployeeByEmail,
 };
 
 /**

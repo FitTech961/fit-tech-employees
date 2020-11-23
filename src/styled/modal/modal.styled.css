@@ -1,0 +1,14 @@
+.ant-modal.modal-employee > .ant-modal-content {
+  border-radius: 32px;
+  border: solid 1px rgba(75, 75, 75, 0.1);
+  background-color: #ffffff;
+}
+
+.modal-employee .modal-button-container {
+  display: flex;
+  align-items: center;
+}
+
+.modal-employee .primary-button {
+  margin-top: 0;
+}
