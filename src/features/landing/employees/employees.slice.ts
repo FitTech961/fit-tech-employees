@@ -53,6 +53,26 @@ const editEmployeeByEmail = createAsyncThunk('employees/editByEmail', async ({ b
   }
 });
 
+const deleteEmployeeById = createAsyncThunk('employees/deleteById', async (id: any, { rejectWithValue }) => {
+  try {
+    const headers = {
+      authorization: 'Bearer 123',
+    };
+
+    const response = await axios.delete(`${EMPLOYEE_MS_DEV}/employee?id=${id}`, { headers });
+    console.log('repsonserr ', response);
+
+    let status: number = 0;
+    let result: any = { status };
+
+    result.status = response?.status ?? 0;
+
+    return result;
+  } catch (error) {
+    return rejectWithValue(error.response?.data);
+  }
+});
+
 const employeesSlice = createSlice({
   name: 'employees',
   initialState: initialState,
@@ -84,7 +104,14 @@ const employeesSlice = createSlice({
       message.error(payload?.message || error?.message);
     });
     builder.addCase(editEmployeeByEmail.fulfilled, (state, { payload }) => {});
+
+    /** edit API rejected response */
     builder.addCase(editEmployeeByEmail.rejected, (state, { payload, error }: any) => {
+      message.error(payload?.message || error?.message);
+    });
+
+    /** delete API rejected response */
+    builder.addCase(deleteEmployeeById.rejected, (state, { payload, error }: any) => {
       message.error(payload?.message || error?.message);
     });
   },
@@ -95,4 +122,4 @@ const employeesSlice = createSlice({
  */
 export const employeesReducer = employeesSlice.reducer;
 
-export const employeesActions = { ...employeesSlice.actions, getAllEmployees, editEmployeeByEmail };
+export const employeesActions = { ...employeesSlice.actions, getAllEmployees, editEmployeeByEmail, deleteEmployeeById };

@@ -31,6 +31,7 @@ const LandingComponent = (props: ReduxProps) => {
     currentEmployee,
     resetCurrentEmployee,
     editEmployeeByEmail,
+    deleteEmployeeById,
   } = props;
 
   const [employees, setEmployees] = useState(employeesList);
@@ -191,6 +192,7 @@ const LandingComponent = (props: ReduxProps) => {
             /** Find employee by id */
             const { key: _id } = row;
             const employee = employeesList.find((employee: Employee) => employee._id === _id);
+            handleDeleteEmployee(employee?._id);
           }}
         />
       ),
@@ -212,6 +214,14 @@ const LandingComponent = (props: ReduxProps) => {
       getAllEmployees();
     }
     setModalVisibility(false);
+  };
+
+  const handleDeleteEmployee = async (id: any) => {
+    const { payload } = await deleteEmployeeById(id);
+
+    if (payload?.status === 201) {
+      getAllEmployees();
+    }
   };
 
   return (
@@ -299,6 +309,7 @@ const mapDispatchToProps = {
   setCurrentEmployee: employeesActions.setCurrentEmployee,
   resetCurrentEmployee: employeesActions.resetCurrentEmployee,
   editEmployeeByEmail: employeesActions.editEmployeeByEmail,
+  deleteEmployeeById: employeesActions.deleteEmployeeById,
 };
 
 /**
