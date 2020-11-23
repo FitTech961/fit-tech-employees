@@ -1,9 +1,9 @@
 {
   "name": "fit-tech-employees",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "FitTech employee's directory web app",
-  "author": "",
-  "homepage": "./",
+  "author": "Richard Nassar",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.2.5",
