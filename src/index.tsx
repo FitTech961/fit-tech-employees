@@ -7,8 +7,7 @@ import './index.css';
 import { App } from './App';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '&config/i18n';
-import interceptors from '&config/interceptors';
-import { store, history, persistor } from './store/store';
+import { store, persistor } from './store/store';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(

@@ -26,15 +26,6 @@
   color: rgb(112, 76, 182);
 }
 
-.footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  color: white;
-  text-align: center;
-}
-
 .main-body {
   height: 100%;
   width: 100%;

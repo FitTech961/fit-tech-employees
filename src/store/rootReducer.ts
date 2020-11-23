@@ -1,7 +1,6 @@
 import { combineReducers, Reducer } from 'redux';
 
 import { loginReducer } from '&features/login/login.slice';
-import { landingReducer } from '&features/landing/landing.slice';
 import { applicationStateReducer } from '&features/applicationState/applicationState.slice';
 import { employeesReducer } from '&features/landing/employees/employees.slice';
 
@@ -14,7 +13,6 @@ const createRootReducer = (routerReducer: Reducer) =>
   combineReducers({
     router: routerReducer,
     login: loginReducer,
-    landing: landingReducer,
     applicationState: applicationStateReducer,
     employees: employeesReducer,
     // TODO add other reducers

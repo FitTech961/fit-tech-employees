@@ -3,6 +3,7 @@ import { Router, Route, Switch, Redirect } from 'react-router';
 import { connect, ConnectedProps } from 'react-redux';
 import { Layout, Button, Row, ConfigProvider, Alert, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 
 import './App.css';
 import 'antd/dist/antd.css';
@@ -17,7 +18,7 @@ import { loginActions } from '&features/login/login.slice';
 type ReduxProps = ConnectedProps<typeof connector>;
 
 const App = (props: ReduxProps) => {
-  const { isAuthenticated, isLoading, isError, isSuccess, errorMessage, successMessage, logoutAPI } = props;
+  const { isAuthenticated, isLoading, isError, isSuccess, errorMessage, successMessage, logoutAPI, token } = props;
 
   const { i18n } = useTranslation();
   const { t } = useTranslation('common');
@@ -30,7 +31,14 @@ const App = (props: ReduxProps) => {
     if (isAuthenticated) history.push('/landing');
   }, []);
 
-  const { Header, Footer, Content } = Layout;
+  axios.interceptors.request.use(async req => {
+    req.headers.authorization = `Bearer ${token}`;
+
+    /** Important: request interceptors **must** return the request. */
+    return req;
+  });
+
+  const { Header, Content } = Layout;
 
   return (
     /* This wrapper handles rtl and ltr directions for i18n */
@@ -74,7 +82,6 @@ const App = (props: ReduxProps) => {
             </Switch>
           </Router>
         </Content>
-        <Footer className='footer'>footer</Footer>
       </Layout>
     </ConfigProvider>
   );
@@ -92,6 +99,7 @@ const mapStateToProps = (state: RootState) => ({
   successMessage: state.applicationState.successMessage,
   isError: state.applicationState.isError,
   isSuccess: state.applicationState.isSuccess,
+  token: state.login.token,
 });
 
 /**

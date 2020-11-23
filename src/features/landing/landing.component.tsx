@@ -6,7 +6,6 @@ import { Layout, Row, Col, Form } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 
 import { RootState } from '&store/store';
-import { landingActions } from './landing.slice';
 import { employeesActions } from './employees/employees.slice';
 import { applicationStateActions } from '../applicationState/applicationState.slice';
 import { TableComponent } from '&styled/table/table.styled';
@@ -44,8 +43,12 @@ const LandingComponent = (props: ReduxProps) => {
   const handleGetEmployees = async () => {
     setLoading(true);
     const { payload } = await getAllEmployees();
+
+    /** IF API failed set employees to empty array */
+    const allEmployees = payload.length !== undefined ? payload : [];
+
+    setEmployees(allEmployees);
     setLoading(false);
-    setEmployees(payload);
   };
 
   useEffect(() => {
