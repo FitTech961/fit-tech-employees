@@ -90,9 +90,18 @@
 
 .app-header {
   background-image: linear-gradient(#387de4, #4e6583) !important;
-  justify-content: flex-end;
   align-items: center;
   display: flex !important;
+  height: 55px;
+}
+
+.app-header-noBg {
+  background: transparent;
+}
+
+.app-header .welcome-name-container {
+  padding-top: 4px;
+  height: 32px;
 }
 
 .app-header-lang {
@@ -111,12 +120,19 @@
   border: 0 !important;
 }
 
+.lang-container {
+  display: flex !important;
+  justify-content: center;
+}
+
 .lang-button {
   background-color: transparent !important;
-  color: black !important;
+  color: rgb(2, 2, 2) !important;
   font-weight: bold !important;
   font-size: 16px !important;
   border: 0 !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
 }
 
 .search-form-container {
@@ -161,6 +177,7 @@
 
 .row-add-search-container .add-emoployee {
   margin-bottom: 24px;
+  height: 48px;
 }
 
 .row-add-search-container .add-emoployee > span {

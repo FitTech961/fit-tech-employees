@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { message } from 'antd';
 
 import { Login, LoginBody } from './login.type';
 import { hashField } from '&auth/hashField';
@@ -11,7 +12,7 @@ const initialState: Login = {
   isAuthenticated: false,
   username: '',
   token: '123',
-  fullName: '',
+  fullName: 'admin',
   role: '',
 };
 
@@ -58,6 +59,11 @@ const loginSlice = createSlice({
       state.token = jwt;
       state.username = username;
       state.isAuthenticated = true;
+    });
+
+    /** Add API rejected response */
+    builder.addCase(loginAPI.rejected, (state, { payload, error }: any) => {
+      message.error(payload?.message || error?.message);
     });
   },
 });

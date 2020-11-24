@@ -13,7 +13,7 @@ import { applicationStateActions } from '&features/applicationState/applicationS
 type ReduxProps = ConnectedProps<typeof connector>;
 
 const LoginComponent = (props: ReduxProps) => {
-  const { loginAPI, setLoading, setApplicationState } = props;
+  const { loginAPI, setLoading } = props;
 
   const { t } = useTranslation(['login', 'common']);
 
@@ -28,8 +28,6 @@ const LoginComponent = (props: ReduxProps) => {
 
     if (payload?.status === 201) {
       history.push('/landing');
-    } else {
-      setApplicationState({ errorMessage: payload?.message, isError: true });
     }
   };
 
@@ -126,7 +124,6 @@ const mapStateToProps = (state: RootState) => ({});
 const mapDispatchToProps = {
   loginAPI: loginActions.loginAPI,
   setLoading: applicationStateActions.setIsLoading,
-  setApplicationState: applicationStateActions.setApplicationState,
 };
 
 /**

@@ -4,8 +4,6 @@ import { ApplicationState } from './applicationState.type';
 
 const initialState: ApplicationState = {
   isLoading: false,
-  errorMessage: 'An Error Occured please try again.',
-  isError: false,
 };
 
 const applicationStateSlice = createSlice({
