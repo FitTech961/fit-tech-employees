@@ -8,7 +8,7 @@ import axios from 'axios';
 import './App.css';
 import 'antd/dist/antd.css';
 import { ProtectedRoute } from '&route/protectedRoute';
-import { RootState, history } from '&store/store';
+import { RootState, history, store } from '&store/store';
 
 import { LandingComponent } from '&features/landing/landing.component';
 import { LoginComponent } from '&features/login/login.component';
@@ -18,7 +18,7 @@ import { loginActions } from '&features/login/login.slice';
 type ReduxProps = ConnectedProps<typeof connector>;
 
 const App = (props: ReduxProps) => {
-  const { isAuthenticated, isLoading, isError, errorMessage, logoutAPI, token } = props;
+  const { isAuthenticated, isLoading, logoutAPI, token } = props;
 
   const { i18n } = useTranslation();
   const { t } = useTranslation('common');
@@ -45,24 +45,25 @@ const App = (props: ReduxProps) => {
     /* This wrapper handles rtl and ltr directions for i18n */
     <ConfigProvider direction={i18n.dir()}>
       {isLoading ? <Loader /> : null}
-      {isError ? <Alert message={t('ERROR_TITLE')} description={errorMessage} type='error' closable className='modal-bg' /> : null}
       <Layout>
-        <Row>
-          <Col span={22}>
+        <Row className={isAuthenticated ? 'app-header' : '.app-header-noBg'}>
+          <Col xs={10} sm={10} md={6} lg={4} xl={4} className='lang-container'>
+            {isAuthenticated ? <span className='header-button'>{store?.getState()?.login?.fullName}</span> : null}
+          </Col>
+          <Col xs={2} sm={2} md={10} lg={14} xl={14}></Col>
+          <Col xs={6} sm={6} md={4} lg={3} xl={3} className='lang-container'>
             {isAuthenticated ? (
-              <Header className='app-header'>
-                <Button
-                  className='header-button'
-                  onClick={() => {
-                    logoutAPI();
-                  }}
-                >
-                  {t('LOGOUT')}
-                </Button>
-              </Header>
+              <Button
+                className='header-button'
+                onClick={() => {
+                  logoutAPI();
+                }}
+              >
+                {t('LOGOUT')}
+              </Button>
             ) : null}
           </Col>
-          <Col span={2} className={isAuthenticated ? 'app-header' : 'app-header-lang'}>
+          <Col xs={6} sm={6} md={4} lg={3} xl={3} className='lang-container'>
             <Button className='lang-button' onClick={() => i18n.changeLanguage('en')}>
               en
             </Button>
@@ -71,6 +72,7 @@ const App = (props: ReduxProps) => {
             </Button>
           </Col>
         </Row>
+
         <Content className='main-body'>
           <Router history={history}>
             <Switch>
@@ -95,8 +97,6 @@ const mapStateToProps = (state: RootState) => ({
   // TODO change this to your real auth validator
   isAuthenticated: state.login.isAuthenticated,
   isLoading: state.applicationState.isLoading,
-  errorMessage: state.applicationState.errorMessage,
-  isError: state.applicationState.isError,
   token: state.login.token,
 });
 

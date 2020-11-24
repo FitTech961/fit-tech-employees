@@ -246,19 +246,19 @@ const LandingComponent = (props: ReduxProps) => {
         </EmployeeModal>
       ) : null}
       <Row>
-        <Col span={2}></Col>
-        <Col span={20} className='search-form-container'>
+        <Col xs={1} sm={1} md={2} lg={2} xl={2}></Col>
+        <Col xs={22} sm={22} md={20} lg={20} xl={20} className='search-form-container'>
           <Form name='employeesList' ref={formRef}>
             <Row justify='start' align='middle' className='row-add-search-container'>
-              <Col sm={24} md={16} lg={16} xl={18}>
+              <Col xs={24} sm={24} md={16} lg={16} xl={18}>
                 <Form.Item name='search'>
                   <FormInputSearch onChange={filterResults} placeholder={t('SEARCH_PLACEHOLDER')} />
                 </Form.Item>
               </Col>
 
-              <Col sm={24} md={2} lg={2} xl={3}></Col>
+              <Col xs={24} sm={24} md={3} lg={3} xl={2}></Col>
 
-              <Col sm={24} md={4} lg={4} xl={3}>
+              <Col xs={24} sm={24} md={5} lg={5} xl={4}>
                 <FormButton
                   onClick={() => {
                     resetCurrentEmployee();
@@ -272,7 +272,7 @@ const LandingComponent = (props: ReduxProps) => {
             </Row>
           </Form>
         </Col>
-        <Col span={3}></Col>
+        <Col xs={1} sm={1} md={2} lg={2} xl={2}></Col>
       </Row>
 
       <Row>
