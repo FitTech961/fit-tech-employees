@@ -39,6 +39,14 @@ let en = {
 
     // Hints
     MOBILE_HINT: 'Enter 8 digits',
+
+    YES: 'Yes',
+    NO: 'No',
+    DELETE_EMPLOYEE: 'Delete Employee',
+    DELETE_EMPLOYEE_MSG: 'Are you sure you want to delete this employee?',
+    DELETE_MSG_SUCCESS: 'Employee Deleted successfully',
+    ADDED_EMPLOYEE_SUCCESS: 'Employee Added successfully',
+    EDIT_EMPLOYEE_SUCCESS: 'Employee Edited successfully',
   },
 };
 

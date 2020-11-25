@@ -35,6 +35,14 @@ let ar = {
 
     // Hints
     MOBILE_HINT: 'أدخل 8 أرقام',
+
+    YES: 'نعم',
+    NO: 'لا',
+    DELETE_EMPLOYEE: 'حذف الموظف',
+    DELETE_EMPLOYEE_MSG: 'هل أنت متأكد أنك تريد حذف هذا الموظف؟',
+    DELETE_MSG_SUCCESS: 'تم حذف الموظف بنجاح',
+    ADDED_EMPLOYEE_SUCCESS: 'تمت إضافة الموظف بنجاح',
+    EDIT_EMPLOYEE_SUCCESS: 'تم تحرير الموظف بنجاح',
   },
 };
 

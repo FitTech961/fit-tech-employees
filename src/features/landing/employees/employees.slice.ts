@@ -37,9 +37,10 @@ const editEmployeeByEmail = createAsyncThunk('employees/editByEmail', async ({ b
   try {
     const response = await axios.patch(`${EMPLOYEE_MS}/employee?email=${email}`, body);
 
-    response.data.status = response.status;
+    const data = { status: 0 };
+    data.status = response.status;
 
-    return response.data;
+    return data;
   } catch (error) {
     return rejectWithValue(error.response?.data);
   }
@@ -48,7 +49,6 @@ const editEmployeeByEmail = createAsyncThunk('employees/editByEmail', async ({ b
 const deleteEmployeeById = createAsyncThunk('employees/deleteById', async (id: any, { rejectWithValue }) => {
   try {
     const response = await axios.delete(`${EMPLOYEE_MS}/employee?id=${id}`);
-    console.log('repsonserr ', response);
 
     let status: number = 0;
     let result: any = { status };
