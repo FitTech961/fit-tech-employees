@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router';
 import { connect, ConnectedProps } from 'react-redux';
-import { Layout, Button, Row, ConfigProvider, Alert, Col } from 'antd';
+import { Layout, Button, Row, ConfigProvider, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
@@ -18,7 +18,7 @@ import { loginActions } from '&features/login/login.slice';
 type ReduxProps = ConnectedProps<typeof connector>;
 
 const App = (props: ReduxProps) => {
-  const { isAuthenticated, isLoading, logoutAPI, token } = props;
+  const { isAuthenticated, isLoading, logoutAPI } = props;
 
   const { i18n } = useTranslation();
   const { t } = useTranslation('common');
@@ -32,14 +32,14 @@ const App = (props: ReduxProps) => {
   }, []);
 
   axios.interceptors.request.use(async req => {
-    req.headers.authorization = `Bearer ${token}`;
+    req.headers.authorization = `Bearer ${store?.getState()?.login?.token}`;
     req.headers['Access-Control-Allow-Origin'] = '*';
 
     /** Important: request interceptors **must** return the request. */
     return req;
   });
 
-  const { Header, Content } = Layout;
+  const { Content } = Layout;
 
   return (
     /* This wrapper handles rtl and ltr directions for i18n */
@@ -97,7 +97,6 @@ const mapStateToProps = (state: RootState) => ({
   // TODO change this to your real auth validator
   isAuthenticated: state.login.isAuthenticated,
   isLoading: state.applicationState.isLoading,
-  token: state.login.token,
 });
 
 /**

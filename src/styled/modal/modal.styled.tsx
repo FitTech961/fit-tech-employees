@@ -7,23 +7,7 @@ import { FormButton, BorderlessButton } from '&styled/form/formButton/formButton
 import './modal.styled.css';
 import { ShorthandPropertyAssignment } from 'typescript';
 
-interface Props {
-  /** Borderless button title */
-  borderlessTitle: string;
-
-  /** Triggered when borderless button is clicked */
-  borderlessHandler: Function;
-
-  /** Title for submit button */
-  buttonTitle: string;
-
-  /** Handler for submit button */
-  buttonHandler: Function;
-}
-
-const EmployeeModal = ({ children, ...props }: ModalProps & PropsWithChildren<any> & Props) => {
-  const { borderlessTitle, borderlessHandler, buttonTitle, buttonHandler } = props;
-
+const EmployeeModal = ({ children, ...props }: ModalProps & PropsWithChildren<any>) => {
   return (
     <Modal width={800} className='modal-employee' title={null} zIndex={900} closable={false} footer={null} {...props}>
       <Row className='modal-header'>

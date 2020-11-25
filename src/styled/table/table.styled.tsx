@@ -12,7 +12,7 @@ const TableComponent = (props: TableProps<any>) => (
       position: ['bottomCenter'],
       locale: { items_per_page: '' },
     }}
-    scroll={{ x: 500 }}
+    scroll={{ x: 500, y: 420 }}
     {...props}
   ></Table>
 );

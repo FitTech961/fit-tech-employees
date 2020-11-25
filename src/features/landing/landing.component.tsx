@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { ColumnsType } from 'antd/lib/table';
-import { Layout, Row, Col, Form } from 'antd';
+import { Layout, Row, Col, Form, message } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 
 import { RootState } from '&store/store';
@@ -10,7 +10,7 @@ import { employeesActions } from './employees/employees.slice';
 import { applicationStateActions } from '../applicationState/applicationState.slice';
 import { TableComponent } from '&styled/table/table.styled';
 import { FormInputSearch } from '&styled/form/formInput/formInput.styled';
-import { FormButton } from '&styled/form/formButton/formButton.styled';
+import { FormButton, BorderlessButton } from '&styled/form/formButton/formButton.styled';
 import { Employee } from './employees/employees.type';
 import { EmployeeModal } from '&styled/modal/modal.styled';
 import { EmployeesComponent } from './employees/employees.component';
@@ -37,6 +37,7 @@ const LandingComponent = (props: ReduxProps) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const [currentEmail, setCurrentEmail] = useState<string>('');
   const [currentdob, setdob] = useState<string>('01-01-2000');
+  const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
 
   const { t } = useTranslation(['landing', 'common']);
 
@@ -197,7 +198,8 @@ const LandingComponent = (props: ReduxProps) => {
             /** Find employee by id */
             const { key: _id } = row;
             const employee = employeesList.find((employee: Employee) => employee._id === _id);
-            handleDeleteEmployee(employee?._id);
+            setCurrentEmployee(employee);
+            setDeleteModalVisible(true);
           }}
         />
       ),
@@ -220,28 +222,72 @@ const LandingComponent = (props: ReduxProps) => {
     const { payload } =
       currentEmployee.email !== '' ? await editEmployeeByEmail({ body: values, email: currentEmail }) : await addEmployee(values);
 
+    const alertMessage = currentEmployee.email !== '' ? t('common:EDIT_EMPLOYEE_SUCCESS') : t('common:ADDED_EMPLOYEE_SUCCESS');
+
     if (payload?.status === 201) {
       getAllEmployees();
+      message.success(alertMessage);
     }
     closeModal();
   };
 
-  const handleDeleteEmployee = async (id: any) => {
+  const handleDeleteEmployee = async () => {
+    const { _id: id } = currentEmployee;
     const { payload } = await deleteEmployeeById(id);
 
     if (payload?.status === 201) {
       getAllEmployees();
+      message.success(t('common:DELETE_MSG_SUCCESS'));
     }
+    closeDeleteModal();
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteModalVisible(false);
+    resetCurrentEmployee();
   };
 
   return (
     <Content>
       {/* Modal when Edit or Add buttons are clicked  */}
       {isModalVisible ? (
-        <EmployeeModal visible={isModalVisible} borderlessHandler={closeModal} buttonHandler={handleSubmitForm}>
+        <EmployeeModal visible={isModalVisible} borderlessHandler={closeDeleteModal}>
           <p className='employee-modal-title'>{currentEmployee.email !== '' ? t('EDIT_FORM_TITLE') : t('common:ADD_EMPLOYEE')}</p>
           <Form ref={formEmpRef} name='Employee Form' layout='vertical' initialValues={currentEmployee} onFinish={handleSubmitForm}>
             <EmployeesComponent closeModal={closeModal} setdob={setdob}></EmployeesComponent>
+          </Form>
+        </EmployeeModal>
+      ) : null}
+
+      {/* Model displayed when delete icon is clicked */}
+      {isDeleteModalVisible ? (
+        <EmployeeModal visible={isDeleteModalVisible} borderlessHandler={closeModal} width={400}>
+          <p className='employee-modal-title'>{t('common:DELETE_EMPLOYEE')}</p>
+          <p className='employee-modal-title'>
+            {t('common:DELETE_EMPLOYEE_MSG')} '{currentEmployee.email}'
+          </p>
+
+          <Form ref={formEmpRef} name='Delete Employee' layout='vertical' initialValues={currentEmployee} onFinish={handleDeleteEmployee}>
+            <Row align='middle'>
+              <Col span={2}></Col>
+              <Col span={10} style={{ display: 'flex', justifyContent: 'center' }}>
+                <Form.Item>
+                  <FormButton htmlType='submit'>{t('common:YES')}</FormButton>
+                </Form.Item>
+              </Col>
+              <Col span={10} style={{ display: 'flex', justifyContent: 'center' }}>
+                <Form.Item>
+                  <BorderlessButton
+                    onClick={() => {
+                      closeDeleteModal();
+                    }}
+                  >
+                    {t('common:NO')}
+                  </BorderlessButton>
+                </Form.Item>
+              </Col>
+              <Col span={2}></Col>
+            </Row>
           </Form>
         </EmployeeModal>
       ) : null}
